@@ -1,35 +1,8 @@
-resource "aws_vpc" "this" {
-  cidr_block       = "10.0.0.0/16"
-  instance_tenancy = "default"
-
-  tags = {
-    Name = "my-vpc"
-  }
-}
-
-resource "aws_subnet" "this" {
-  vpc_id     = aws_vpc.this.id
-  cidr_block = "10.0.1.0/24"
-  availability_zone = "ap-south-1a"
-   map_public_ip_on_launch = true
-  tags = {
-    Name = "Main"
-  }
-}
-
-resource "aws_security_group" "this" {
-  name        = "web_server_sg"
-  description = "Allow SSH access"
-  vpc_id      = aws_vpc.this.id
-
-  ingress {
-    from_port   = 22
-    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -51,8 +24,12 @@ resource "aws_key_pair" "generated_key" {
 
 resource "aws_instance" "this" {
   ami                     = "ami-02b8269d5e85954ef"
-  instance_type           = "t2.micro"
+  instance_type           = "t2.large"
    subnet_id     = aws_subnet.this.id
   key_name               = aws_key_pair.generated_key.key_name # Use the name of the new key pair
   vpc_security_group_ids = [aws_security_group.this.id]
+root_block_device {
+  volume_size = 30
+  volume_type = "gp3"
 }
+}                                                                                                               62,1          Bot
