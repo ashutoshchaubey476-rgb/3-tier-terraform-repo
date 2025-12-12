@@ -55,4 +55,9 @@ resource "aws_instance" "this" {
    subnet_id     = aws_subnet.this.id
   key_name               = aws_key_pair.generated_key.key_name # Use the name of the new key pair
   vpc_security_group_ids = [aws_security_group.this.id]
+ root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
+  }
 }
+
