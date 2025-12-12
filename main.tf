@@ -51,7 +51,7 @@ resource "aws_key_pair" "generated_key" {
 
 resource "aws_instance" "this" {
   ami                     = "ami-02b8269d5e85954ef"
-  instance_type           = "t2.micro"
+  instance_type           = "t2.large"
    subnet_id     = aws_subnet.this.id
   key_name               = aws_key_pair.generated_key.key_name # Use the name of the new key pair
   vpc_security_group_ids = [aws_security_group.this.id]
